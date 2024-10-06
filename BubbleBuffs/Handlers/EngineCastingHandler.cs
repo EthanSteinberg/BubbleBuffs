@@ -38,11 +38,11 @@ namespace BubbleBuffs.Handlers {
 
         private int ArcaneReservoirPointsNeeded {
             get {
-                var PowerfulChangeRssLogic = AbilityCache.CasterCache[_castTask.Caster.UniqueId]?.PowerfulChange?.GetComponent<AbilityResourceLogic>();
+                var PowerfulChangeRssLogic = AbilityCache.CasterCache[_castTask.Caster.CharacterName]?.PowerfulChange?.GetComponent<AbilityResourceLogic>();
                 var ShareTransmutationCost = PowerfulChangeRssLogic ? PowerfulChangeRssLogic.CalculateCost(_castTask.SpellToCast) : 1;
-                var ShareTransmutationRssLogic = AbilityCache.CasterCache[_castTask.Caster.UniqueId]?.ShareTransmutation?.GetComponent<AbilityResourceLogic>();
+                var ShareTransmutationRssLogic = AbilityCache.CasterCache[_castTask.Caster.CharacterName]?.ShareTransmutation?.GetComponent<AbilityResourceLogic>();
                 var PowerfulChangeCost = ShareTransmutationRssLogic ? ShareTransmutationRssLogic.CalculateCost(_castTask.SpellToCast) : 1;
-                var ReservoirCLBuffRssLogic = AbilityCache.CasterCache[_castTask.Caster.UniqueId]?.ReservoirCLBuff?.GetComponent<AbilityResourceLogic>();
+                var ReservoirCLBuffRssLogic = AbilityCache.CasterCache[_castTask.Caster.CharacterName]?.ReservoirCLBuff?.GetComponent<AbilityResourceLogic>();
                 var ReservoirCLBuffCost = ReservoirCLBuffRssLogic ? ReservoirCLBuffRssLogic.CalculateCost(_castTask.SpellToCast) : 1;
                 var points = 0;
                 if (_castTask.ShareTransmutation && _castTask.Caster != _castTask.Target.Unit) points += Math.Max(0, ShareTransmutationCost);

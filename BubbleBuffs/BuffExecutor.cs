@@ -85,7 +85,7 @@ namespace BubbleBuffs {
             var tooltip = new TooltipTemplateBuffer();
 
 
-            var unitBuffs = Bubble.Group.Select(u => new UnitBuffData(u)).ToDictionary(bd => bd.Unit.UniqueId);
+            var unitBuffs = Bubble.Group.Select(u => new UnitBuffData(u)).ToDictionary(bd => bd.Unit.CharacterName);
 
             List<CastTask> tasks = new();
 
@@ -126,17 +126,17 @@ namespace BubbleBuffs {
                         if (!caster.AzataZippyMagic || (caster.AzataZippyMagic && priorSpellTasks.Count() % 2 == 0)) {
                             int neededArcanistPool = 0;
                             if (caster.PowerfulChange) {
-                                var PowerfulChangeRssLogic = AbilityCache.CasterCache[caster.who.UniqueId]?.PowerfulChange?.GetComponent<AbilityResourceLogic>();
+                                var PowerfulChangeRssLogic = AbilityCache.CasterCache[caster.who.CharacterName]?.PowerfulChange?.GetComponent<AbilityResourceLogic>();
                                 var PowerfulChangeCost = PowerfulChangeRssLogic ? PowerfulChangeRssLogic.CalculateCost(caster.spell) : 1;
                                 neededArcanistPool += Math.Max(0, PowerfulChangeCost);
                             }
                             if (caster.ShareTransmutation && caster.who != forTarget.Unit) {
-                                var ShareTransmutationRssLogic = AbilityCache.CasterCache[caster.who.UniqueId]?.ShareTransmutation?.GetComponent<AbilityResourceLogic>();
+                                var ShareTransmutationRssLogic = AbilityCache.CasterCache[caster.who.CharacterName]?.ShareTransmutation?.GetComponent<AbilityResourceLogic>();
                                 var ShareTransmutationCost = ShareTransmutationRssLogic ? ShareTransmutationRssLogic.CalculateCost(caster.spell) : 1;
                                 neededArcanistPool += Math.Max(0, ShareTransmutationCost);
                             }
                             if (caster.ReservoirCLBuff) {
-                                var ReservoirCLBuffRssLogic = AbilityCache.CasterCache[caster.who.UniqueId]?.ReservoirCLBuff?.GetComponent<AbilityResourceLogic>();
+                                var ReservoirCLBuffRssLogic = AbilityCache.CasterCache[caster.who.CharacterName]?.ReservoirCLBuff?.GetComponent<AbilityResourceLogic>();
                                 var ReservoirCLBuffCost = ReservoirCLBuffRssLogic ? ReservoirCLBuffRssLogic.CalculateCost(caster.spell) : 1;
                                 neededArcanistPool += Math.Max(0, ReservoirCLBuffCost);
                             }

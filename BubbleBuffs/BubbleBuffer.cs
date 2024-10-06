@@ -189,7 +189,7 @@ namespace BubbleBuffs {
         private void MigrateSaveToV1() {
             Dictionary<string, string> nameToId = new();
             foreach (var ch in Game.Instance.Player.AllCharacters) {
-                nameToId[ch.CharacterName] = ch.UniqueId;
+                nameToId[ch.CharacterName] = ch.CharacterName;
             }
 
             foreach (SavedBuffState s in save.Buffs.Values) {
@@ -1423,7 +1423,7 @@ namespace BubbleBuffs {
                     ShareTransmutation = u.Abilities.GetAbility(BubbleBlueprints.ShareTransmutation),
                     ReservoirCLBuff = u.Abilities.GetAbility(BubbleBlueprints.ReservoirBaseAbility)
                 };
-                CasterCache[u.UniqueId] = entry;
+                CasterCache[u.CharacterName] = entry;
             }
         }
     }

@@ -112,9 +112,9 @@ namespace BubbleBuffs {
         public string NameMeta => $"{Spell.Name} {MetaMagicFlags}";
 
 
-        public bool UnitWants(UnitEntityData unit) => wanted.Contains(unit.UniqueId);
-        public bool UnitWantsRemoved(UnitEntityData unit) => notWanted.Contains(unit.UniqueId);
-        public bool UnitGiven(UnitEntityData unit) => given.Contains(unit.UniqueId);
+        public bool UnitWants(UnitEntityData unit) => wanted.Contains(unit.CharacterName);
+        public bool UnitWantsRemoved(UnitEntityData unit) => notWanted.Contains(unit.CharacterName);
+        public bool UnitGiven(UnitEntityData unit) => given.Contains(unit.CharacterName);
 
         public List<BuffProvider> CasterQueue = new();
         public List<(string, BuffProvider)> ActualCastQueue;
@@ -167,11 +167,11 @@ namespace BubbleBuffs {
 
         internal void SetUnitWants(UnitEntityData unit, bool v) {
             if (v) {
-                wanted.Add(unit.UniqueId);
-                notWanted.Remove(unit.UniqueId);
+                wanted.Add(unit.CharacterName);
+                notWanted.Remove(unit.CharacterName);
             } else {
-                wanted.Remove(unit.UniqueId);
-                notWanted.Add(unit.UniqueId);
+                wanted.Remove(unit.CharacterName);
+                notWanted.Add(unit.CharacterName);
             }
         }
 
@@ -179,7 +179,7 @@ namespace BubbleBuffs {
             InGroup = state.InGroup;
             for (int i = 0; i < Bubble.Group.Count; i++) {
                 UnitEntityData u = Bubble.Group[i];
-                if (state.Wanted.Contains(u.UniqueId))
+                if (state.Wanted.Contains(u.CharacterName))
                     SetUnitWants(u, true);
             }
             if (state.IgnoreForOverwriteCheck != null) {
@@ -215,7 +215,7 @@ namespace BubbleBuffs {
 
         public bool CanTarget(UnitEntityData who) {
             foreach (var caster in CasterQueue) {
-                if (caster.CanTarget(who.UniqueId))
+                if (caster.CanTarget(who.CharacterName))
                     return true;
             }
             return false;
@@ -324,7 +324,7 @@ namespace BubbleBuffs {
     }
     public class BuffProvider {
         public CasterKey Key => new() {
-            Name = who.UniqueId,
+            Name = who.CharacterName,
             Spellbook = book?.Blueprint.AssetGuid.m_Guid ?? Guid.Empty
         };
 
@@ -411,14 +411,14 @@ namespace BubbleBuffs {
 
         public bool CanTarget(string targetId) {
             if (ArchmageArmor)
-                return targetId == who.UniqueId;
+                return targetId == who.CharacterName;
 
             using (new ForceShareTransmutation(this)) {
                 if (!spell.CanTarget(new TargetWrapper(Bubble.GroupById[targetId])))
                     return false;
 
                 if (SelfCastOnly)
-                    return targetId == who.UniqueId;
+                    return targetId == who.CharacterName;
                 return true;
             }
         }

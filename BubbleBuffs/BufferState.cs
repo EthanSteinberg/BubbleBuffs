@@ -74,7 +74,7 @@ namespace BubbleBuffs {
                         if (book.Blueprint.IsArcanist) {
                             for (int level = 1; level <= book.LastSpellbookLevel; level++) {
                                 Main.Verbose($"    Looking at arcanist level {level}", "state");
-                                ReactiveProperty<int> credits = new ReactiveProperty<int>(book.GetSpellsPerDay(level));
+                                ReactiveProperty<int> credits = new ReactiveProperty<int>(500);
                                 foreach (var slot in book.GetMemorizedSpells(level)) {
                                     Main.Verbose($"      Adding arcanist buff: {slot.Spell.Name}", "state");
                                     AddBuff(dude: dude,
@@ -90,7 +90,7 @@ namespace BubbleBuffs {
                         } else if (book.Blueprint.Spontaneous) {
                             for (int level = 1; level <= book.LastSpellbookLevel; level++) {
                                 Main.Verbose($"    Looking at spont level {level}", "state");
-                                ReactiveProperty<int> credits = new ReactiveProperty<int>(book.GetSpellsPerDay(level));
+                                ReactiveProperty<int> credits = new ReactiveProperty<int>(500);
                                 foreach (var spell in book.GetKnownSpells(level)) {
                                     Main.Verbose($"      Adding spontaneous buff: {spell.Name}", "state");
                                     AddBuff(dude: dude,
@@ -182,9 +182,9 @@ namespace BubbleBuffs {
 
 
             lastGroup.Clear();
-            lastGroup.AddRange(Group.Select(x => x.UniqueId));
+            lastGroup.AddRange(Group.Select(x => x.CharacterName));
             foreach (var u in Group)
-                Bubble.GroupById[u.UniqueId] = u;
+                Bubble.GroupById[u.CharacterName] = u;
             InputDirty = false;
 
 
@@ -223,7 +223,7 @@ namespace BubbleBuffs {
                 return true;
 
             for (int i = 0; i < lastGroup.Count; i++) {
-                if (lastGroup[i] != group[i].UniqueId)
+                if (lastGroup[i] != group[i].CharacterName)
                     return true;
             }
 
@@ -243,9 +243,9 @@ namespace BubbleBuffs {
 
                 foreach (var u in Bubble.Group) {
                     if (buff.UnitWants(u)) {
-                        save.Wanted.Add(u.UniqueId);
+                        save.Wanted.Add(u.CharacterName);
                     } else if (buff.UnitWantsRemoved(u)) {
-                        save.Wanted.Remove(u.UniqueId);
+                        save.Wanted.Remove(u.CharacterName);
                     }
                 }
                 foreach (var caster in buff.CasterQueue) {
